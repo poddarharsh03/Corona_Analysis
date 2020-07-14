@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from bs4 import BeautifulSoup
 from requests import get
-
+import csv
 from flask import Flask
 
 
@@ -25,15 +25,17 @@ def get_data():
         arr[name]={"total":total,"cured":cured,"death":death}
     return (arr)
 
-app = Flask(__name__)
+reader = csv.reader(open("state.csv", 'r'))
+d={}
 
-@app.route("/")
-def home():
-    return get_data()
-    
-if __name__ == "__main__":
-    app.run(debug=True)
+for row in reader:
+    d[row[0]]= {"name": row[1],"total": row[2],"cured": row[3],"death": row[4]}
+print(d)
 
-
+def graph_plt(z):
+    s=str(z)
+    a=d[s]
+    nm,tot,cur,deat=a['name'],a['total'],a['cured'],a['death']
+    print(nm,tot,cur,deat)
 
 
